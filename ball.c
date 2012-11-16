@@ -4,6 +4,8 @@
 
 //struct ball* myBall;
 
+// Whatever.....
+
 // Call the LCD functins to draw a ball
 // at it's current location
 void drawBall(Ball *myBall) {
