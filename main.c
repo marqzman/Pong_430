@@ -1,7 +1,7 @@
 #include "msp430x54x.h"
-//#include "board.h"
 #include "hal_lcd.h"
 #include "board_defs.h"
+#include "pong.h"
 
 /* From LAB 3*/
 	void halBoardStartXT1(void);
@@ -39,12 +39,15 @@ void initCP() {
 	halLcdClearScreen();
 
 	__delay_cycles(200000);
+	
+	 UCSCTL8 |= MODOSCREQEN; 
 }
 
 
 
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
+	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
 	initCP();
 	startGame();
 	

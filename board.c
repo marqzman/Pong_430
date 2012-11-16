@@ -1,8 +1,23 @@
 #include "pong.h"
-#include "ball.h"
-#include "board.h"
 
-Ball theBall;
+Ball *theBall;
+
+Ball *makeBall(int x, int y) {
+	Ball *temp;
+	temp.dir = UP;
+	temp.x = x;
+	temp.y = y;
+
+	return temp;
+}
+
+/*
+struct paddle makePaddle(int x) {
+	struct paddle temp;
+	temp.x = x;
+
+	return temp;
+}*/
 
 void drawBoard() {
 	// Clear the LCD
@@ -13,9 +28,8 @@ void drawBoard() {
 
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
-	while(1) {
-		
-	}
+	//while(1) {	
+	//}
 }
 
 // Brings up the main menue
@@ -28,3 +42,4 @@ void startGame() {
 	// Print a message...
 	// halLcdPrintLine(buffer, 3, OVERWRITE_TEXT );
 }
+
