@@ -1,0 +1,4 @@
+Pong Arcade game on an MSP430
+
+A working game of Pong using the LCD as display and the joy stick plus a 
+potentiometer for user input.
