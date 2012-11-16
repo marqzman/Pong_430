@@ -34,13 +34,14 @@ void initCP() {
 	// Initialize LCD and backlight
 	halLcdInit();
 	halLcdBackLightInit();
-	halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-2);
+	halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-5);
+//	halLcdSetBackLight('0');
 	halLcdSetContrast(lcdContrastSettingLOCAL+10);
 	halLcdClearScreen();
 
-	__delay_cycles(200000);
+	//__delay_cycles(200000);
 	
-	 UCSCTL8 |= MODOSCREQEN; 
+	//UCSCTL8 |= MODOSCREQEN;
 }
 
 
@@ -49,8 +50,14 @@ int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
 	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
 	initCP();
+
+	__delay_cycles(200000);
+
 	startGame();
 	
+	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);
+
+	//halLcdCircle(myBall->x, myBall->y, 1, PIXEL_ON);
 }
 
 /*Functions from LAB 3*/
