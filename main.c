@@ -33,10 +33,10 @@ void initCP() {
 
 	// Initialize LCD and backlight
 	halLcdInit();
-	halLcdBackLightInit();
-	halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-5);
-//	halLcdSetBackLight('0');
-	halLcdSetContrast(lcdContrastSettingLOCAL+10);
+	//halLcdBackLightInit();
+	//halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-5);
+	halLcdSetContrast(lcdContrastSettingLOCAL+12);
+	//halLcdSetContrast(0);
 	halLcdClearScreen();
 
 	//__delay_cycles(200000);
@@ -52,6 +52,7 @@ int main() {
 	initCP();
 
 	__delay_cycles(200000);
+
 
 	startGame();
 	

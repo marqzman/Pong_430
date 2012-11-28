@@ -1,7 +1,6 @@
 #ifndef PONG_H
 #define PONG_H
 
-#define BOUNCE(deg)	((deg == 0) ? (deg += 180) : (deg = (360 - deg)))
 
 #define NONE		360
 #define UP			0
@@ -14,9 +13,16 @@
 
 #define PI		3.14159265359
 
+#define SPEED	1
+
+#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
+//#define BOUNCE(newDeg)		newDeg = 180 + newDeg
+//#define BOUNCE(rad)	((rad < PI) ? (rad += PI) : (rad -= PI))
+
 /*********STRUCTS*********/
 typedef struct {
 	int dir;
+	//double radians;
 	int x;
 	int y;
 	int radius;

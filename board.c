@@ -1,8 +1,8 @@
 #include "msp430x54x.h"
 #include "hal_lcd.h"
 #include "board_defs.h"
-
 #include "pong.h"
+#include <stdlib.h>
 
 
 
@@ -11,7 +11,12 @@ void makeBall(Ball* ball, int radius, int x, int y) {
 	//Ball *tempptr;
 	//tempptr = &temp;
 
-	ball->dir = UP;
+	//ball->dir = DOWN;
+	//ball->radians = NONE;
+
+	ball->dir = DOWN;
+	//int deg = rand() % 360;
+	//ball->radians = deg*(PI/180);
 	ball->radius = radius;
 	ball->x = x;
 	ball->y = y;
@@ -49,7 +54,7 @@ void startGame() {
 	drawBall(&theBall);
 	while(1) {
 		moveBall(&theBall);
-		//__delay_cycles(5000);
+		__delay_cycles(100000);
 	}
 	// Print a message...
 	// halLcdPrintLine(buffer, 3, OVERWRITE_TEXT );
