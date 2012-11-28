@@ -1,7 +1,7 @@
 #include "msp430x54x.h"
-//#include "board.h"
 #include "hal_lcd.h"
 #include "board_defs.h"
+#include "pong.h"
 
 /* From LAB 3*/
 	void halBoardStartXT1(void);
@@ -33,21 +33,32 @@ void initCP() {
 
 	// Initialize LCD and backlight
 	halLcdInit();
-	halLcdBackLightInit();
-	halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-2);
-	halLcdSetContrast(lcdContrastSettingLOCAL+10);
+	//halLcdBackLightInit();
+	//halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-5);
+	halLcdSetContrast(lcdContrastSettingLOCAL+12);
+	//halLcdSetContrast(0);
 	halLcdClearScreen();
 
-	__delay_cycles(200000);
+	//__delay_cycles(200000);
+	
+	//UCSCTL8 |= MODOSCREQEN;
 }
 
 
 
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
+	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
 	initCP();
+
+	__delay_cycles(200000);
+
+
 	startGame();
 	
+	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);
+
+	//halLcdCircle(myBall->x, myBall->y, 1, PIXEL_ON);
 }
 
 /*Functions from LAB 3*/

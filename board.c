@@ -1,8 +1,37 @@
+#include "msp430x54x.h"
+#include "hal_lcd.h"
+#include "board_defs.h"
 #include "pong.h"
-#include "ball.h"
-#include "board.h"
+#include <stdlib.h>
 
-Ball theBall;
+
+
+void makeBall(Ball* ball, int radius, int x, int y) {
+	//Ball temp;
+	//Ball *tempptr;
+	//tempptr = &temp;
+
+	//ball->dir = DOWN;
+	//ball->radians = NONE;
+
+	ball->dir = DOWN;
+	//int deg = rand() % 360;
+	//ball->radians = deg*(PI/180);
+	ball->radius = radius;
+	ball->x = x;
+	ball->y = y;
+
+
+	//return tempptr;
+}
+
+/*
+struct paddle makePaddle(int x) {
+	struct paddle temp;
+	temp.x = x;
+
+	return temp;
+}*/
 
 void drawBoard() {
 	// Clear the LCD
@@ -13,18 +42,22 @@ void drawBoard() {
 
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
-	while(1) {
-		
-	}
+	//while(1) {	
+	//}
 }
 
-// Brings up the main menue
+// Brings up the main menu
 void startGame() {
-	theBall = makeBall(WIDTH/2, HEIGHT/2);
-	drawBall(theBall);
+//	halLcdPrintLine("PONG", 4, OVERWRITE_TEXT);
+	Ball theBall;
+	makeBall(&theBall, 2, WIDTH/2, HEIGHT/2);
+	drawBall(&theBall);
 	while(1) {
-		moveBall(theBall, theBall.dir);
+		moveBall(&theBall);
+		__delay_cycles(100000);
 	}
 	// Print a message...
 	// halLcdPrintLine(buffer, 3, OVERWRITE_TEXT );
+
 }
+
