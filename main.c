@@ -51,7 +51,7 @@ int main() {
 
 	__delay_cycles(200000);
 
-	play(SINGLE);
+	play(DOUBLE);
 	//start1PlayerGame();
 	
 	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);

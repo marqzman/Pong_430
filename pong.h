@@ -51,12 +51,14 @@ void makeBall(Ball* ball, int radius, int x, int y);
 void makePaddle(Paddle* paddle, int length, int x, int y);
 void play(int mode);
 void startSingleGame();
+void startDoubleGame();
 
 //int difficulty;
 
 //	ball.c
 void drawBall(Ball *myBall);
 void moveBall(Ball *myBall, Paddle* myPaddle);
+void moveBall2(Ball *myBall, Paddle* paddle1, Paddle* paddle2);
 
 // paddle.c
 void drawPaddle(Paddle* myPaddle);

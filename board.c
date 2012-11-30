@@ -3,9 +3,11 @@
 #include "board_defs.h"
 #include "pong.h"
 #include <stdlib.h>
+#include <math.h>
 
 Ball theBall;
 Paddle paddle1;
+Paddle paddle2;
 
 void makeBall(Ball* ball, int radius, int x, int y) {
 	ball->x		=	x;
@@ -28,26 +30,25 @@ void play(int mode) {
 			startSingleGame();
 			break;
 		case DOUBLE:
+			startDoubleGame();
 			break;
 		case COMPUTER:
 			break;
 	}
 }
 
-// Brings up the main menu
+// Starts a Single Player Game
 void startSingleGame() {
-//	halLcdPrintLine("PONG", 4, OVERWRITE_TEXT);
-
 	int paddleX = WIDTH/2;
-
-	//Paddle thePaddle;
-	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 10);
+	// Make and draw the paddle
+	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 12);
 	drawPaddle(&paddle1);
 
-	//Ball theBall;
+	// Make and draw the ball
 	makeBall(&theBall, 2, WIDTH/2, HEIGHT/2);
 	drawBall(&theBall);
 
+	// Play forever
 	while(1) {
 		moveBall(&theBall, &paddle1);
 
@@ -57,8 +58,35 @@ void startSingleGame() {
 
 		__delay_cycles(100000);
 	}
-	// Print a message...
-	// halLcdPrintLine(buffer, 3, OVERWRITE_TEXT );
-
 }
 
+// Starts a Two Player Game
+void startDoubleGame() {
+	int paddle1X = WIDTH/2;
+	int paddle2X = WIDTH/2;
+
+	// Make and draw player 1's paddle
+	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 12);
+	drawPaddle(&paddle1);
+
+	// Make and draw player 2's paddle
+	makePaddle(&paddle2, 6, WIDTH/2, 12);
+	drawPaddle(&paddle2);
+
+	// Make and draw the ball
+	makeBall(&theBall, 2, WIDTH/2, HEIGHT/2);
+	drawBall(&theBall);
+
+	// Play forever
+	while(1) {
+		moveBall2(&theBall, &paddle1, &paddle2);
+
+		paddle1X = (paddle1X + 1) % WIDTH;	// Testing
+		paddle2X = (paddle2X - 1) % WIDTH;	// Testing
+
+		movePaddle(&paddle1, paddle1X);				// Testing
+		movePaddle(&paddle2, fabs(paddle2X));		// Testing
+
+		__delay_cycles(100000);
+	}
+}

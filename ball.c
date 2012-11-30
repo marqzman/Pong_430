@@ -83,13 +83,15 @@ void checkWalls(Ball *myBall){
 }
 
 void checkPaddle(Ball* myBall, Paddle* myPaddle) {
-	char buffer[7] = {"S" "C" "O" "R" "E" " "};
-
-	if((myBall->y == myPaddle->y) && (myBall->dy > 0)) {
+	//char buffer[7] = {"S" "C" "O" "R" "E" " "};
+	int leftX	= myPaddle->x - (myPaddle->length)/2;
+	int rightX	= myPaddle->x + (myPaddle->length)/2;
+	if(((myBall->y + (myBall->radius)*myBall->dy) == myPaddle->y) && (myBall->x + myBall->radius >= leftX) && (myBall->x - myBall->radius <= rightX)) {
+		myBall->dy *= -1;
 		myPaddle->score += 1;
 	}
-	buffer[6] = '0' + myPaddle->score;
-	halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
+	//buffer[6] = '0' + myPaddle->score;
+	//halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
 }
 
 void updateBall(Ball *myBall){
@@ -104,7 +106,28 @@ void updateBall(Ball *myBall){
 	drawBall(myBall);
 }
 
+/* For Single Player Mode */
 void moveBall(Ball* myBall, Paddle* myPaddle) {
+	char buffer[7] = {"S" "C" "O" "R" "E" " "};
+
 	checkPaddle(myBall, myPaddle);
+	buffer[6] = '0' + myPaddle->score;
+	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
+
+	updateBall(myBall);
+}
+
+/* For Double Player or Computer Mode */
+void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
+	char buffer[7] = {"S" "C" "O" "R" "E" " "};
+
+	checkPaddle(myBall, paddle1);
+	buffer[6] = '0' + paddle1->score;
+	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
+
+	checkPaddle(myBall, paddle2);
+	buffer[6] = '0' + paddle2->score;
+	halLcdPrintLine(buffer, 8, OVERWRITE_TEXT);
+
 	updateBall(myBall);
 }
