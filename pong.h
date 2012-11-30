@@ -1,12 +1,14 @@
 #ifndef PONG_H
 #define PONG_H
 
-
-#define NONE		360
-#define UP			0
-#define RIGHT		90
-#define DOWN		180
-#define LEFT		270
+#define RIGHT		0
+//#define DOWNRIGHT	45
+#define DOWN		90
+//#define DOWNLEFT	135
+#define LEFT		180
+//#define UPLEFT		225
+#define UP			270
+//#define UPRIGHT		315
 
 #define HEIGHT	109
 #define WIDTH	137
@@ -15,16 +17,18 @@
 
 #define SPEED	1
 
-#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
+//#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
 //#define BOUNCE(newDeg)		newDeg = 180 + newDeg
 //#define BOUNCE(rad)	((rad < PI) ? (rad += PI) : (rad -= PI))
 
 /*********STRUCTS*********/
 typedef struct {
-	int dir;
+	//int dir;
 	//double radians;
 	int x;
 	int y;
+	int dx;
+	int dy;
 	int radius;
 } Ball;
 

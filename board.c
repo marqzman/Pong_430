@@ -14,12 +14,12 @@ void makeBall(Ball* ball, int radius, int x, int y) {
 	//ball->dir = DOWN;
 	//ball->radians = NONE;
 
-	ball->dir = DOWN;
-	//int deg = rand() % 360;
-	//ball->radians = deg*(PI/180);
+	//ball->dir = DOWN;
 	ball->radius = radius;
 	ball->x = x;
 	ball->y = y;
+	ball->dx = 1;
+	ball->dy = 1;
 
 
 	//return tempptr;
