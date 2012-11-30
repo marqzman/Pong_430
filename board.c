@@ -18,6 +18,7 @@ void makePaddle(Paddle* paddle, int length, int x, int y) {
 	paddle->length	=	length;
 	paddle->x 		=	x;
 	paddle->y		=	y;
+	paddle->score	=	0;
 }
 
 // mode = Single player; 2 Player; Agains MSP430
@@ -48,7 +49,7 @@ void startSingleGame() {
 	drawBall(&theBall);
 
 	while(1) {
-		moveBall(&theBall);
+		moveBall(&theBall, &paddle1);
 
 		paddleX = (paddleX + 1) % WIDTH;	// Testing
 

@@ -82,11 +82,17 @@ void checkWalls(Ball *myBall){
 	}
 }
 
-void checkPaddle(Ball* myBall) {
+void checkPaddle(Ball* myBall, Paddle* myPaddle) {
+	char buffer[7] = {"S" "C" "O" "R" "E" " "};
 
+	if((myBall->y == myPaddle->y) && (myBall->dy > 0)) {
+		myPaddle->score += 1;
+	}
+	buffer[6] = '0' + myPaddle->score;
+	halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
 }
 
-void moveBall(Ball *myBall){
+void updateBall(Ball *myBall){
 	// Erase the current location of the ball
 	eraseBall(myBall);
 	// Check for a bounce
@@ -96,4 +102,9 @@ void moveBall(Ball *myBall){
 	myBall->y += SPEED*myBall->dy;
 	// Draw the ball in it's new location
 	drawBall(myBall);
+}
+
+void moveBall(Ball* myBall, Paddle* myPaddle) {
+	checkPaddle(myBall, myPaddle);
+	updateBall(myBall);
 }

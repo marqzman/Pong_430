@@ -41,6 +41,7 @@ typedef struct {
 	int x;
 	int y;
 	int length;
+	int score;
 
 } Paddle;
 
@@ -55,7 +56,7 @@ void startSingleGame();
 
 //	ball.c
 void drawBall(Ball *myBall);
-void moveBall(Ball *myBall);
+void moveBall(Ball *myBall, Paddle* myPaddle);
 
 // paddle.c
 void drawPaddle(Paddle* myPaddle);
