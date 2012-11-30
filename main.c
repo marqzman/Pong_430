@@ -3,6 +3,7 @@
 #include "board_defs.h"
 #include "pong.h"
 
+
 /* From LAB 3*/
 	void halBoardStartXT1(void);
 	void halBoardSetSystemClock(unsigned char systemClockSpeed);
@@ -51,7 +52,7 @@ int main() {
 
 	__delay_cycles(200000);
 
-	play(DOUBLE);
+	play(SINGLE);
 	//start1PlayerGame();
 	
 	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);
