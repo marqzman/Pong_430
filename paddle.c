@@ -41,7 +41,7 @@ void movePaddle(Paddle* myPaddle, int newX ) {
 
 
 	// Update the paddle's x coordinate;
-	myPaddle->x = newX/30;
+	myPaddle->x = newX;
 
 	// Draw the paddle
 	drawPaddle(myPaddle);
