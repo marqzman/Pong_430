@@ -35,7 +35,7 @@ void initCP() {
 	halLcdInit();
 	//halLcdBackLightInit();
 	//halLcdSetBackLight(lcdBackLightLevelSettingLOCAL-5);
-	halLcdSetContrast(lcdContrastSettingLOCAL+12);
+	halLcdSetContrast(lcdContrastSettingLOCAL+20);
 	//halLcdSetContrast(0);
 	halLcdClearScreen();
 
