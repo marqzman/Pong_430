@@ -44,8 +44,6 @@ void initCP() {
 	//UCSCTL8 |= MODOSCREQEN;
 }
 
-
-
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
 	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
@@ -53,8 +51,8 @@ int main() {
 
 	__delay_cycles(200000);
 
-
-	startGame();
+	play(SINGLE);
+	//start1PlayerGame();
 	
 	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);
 

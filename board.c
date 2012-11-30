@@ -4,56 +4,56 @@
 #include "pong.h"
 #include <stdlib.h>
 
-
+Ball theBall;
+Paddle paddle1;
 
 void makeBall(Ball* ball, int radius, int x, int y) {
-	//Ball temp;
-	//Ball *tempptr;
-	//tempptr = &temp;
-
-	//ball->dir = DOWN;
-	//ball->radians = NONE;
-
-	//ball->dir = DOWN;
-	ball->radius = radius;
-	ball->x = x;
-	ball->y = y;
-	ball->dx = 1;
-	ball->dy = 1;
-
-
-	//return tempptr;
+	ball->x		=	x;
+	ball->y		=	y;
+	ball->dx	=	1;
+	ball->dy	=	1;
 }
 
-/*
-struct paddle makePaddle(int x) {
-	struct paddle temp;
-	temp.x = x;
-
-	return temp;
-}*/
-
-void drawBoard() {
-	// Clear the LCD
-	// Draw each component
-	// drawBall();
-	// drawPaddle();
+void makePaddle(Paddle* paddle, int length, int x, int y) {
+	paddle->length	=	length;
+	paddle->x 		=	x;
+	paddle->y		=	y;
 }
 
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
-	//while(1) {	
-	//}
+	switch(mode) {
+		case SINGLE:
+			startSingleGame();
+			break;
+		case DOUBLE:
+			break;
+		case COMPUTER:
+			break;
+	}
 }
 
 // Brings up the main menu
-void startGame() {
+void startSingleGame() {
 //	halLcdPrintLine("PONG", 4, OVERWRITE_TEXT);
-	Ball theBall;
+
+	int paddleX = WIDTH/2;
+
+	//Paddle thePaddle;
+	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 10);
+	drawPaddle(&paddle1);
+
+	//Ball theBall;
 	makeBall(&theBall, 2, WIDTH/2, HEIGHT/2);
 	drawBall(&theBall);
+
 	while(1) {
 		moveBall(&theBall);
+
+		paddleX = (paddleX + 1) % WIDTH;	// Testing
+
+		movePaddle(&paddle1, paddleX);	// Testing
+
 		__delay_cycles(100000);
 	}
 	// Print a message...

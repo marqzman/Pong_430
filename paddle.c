@@ -1,19 +1,45 @@
-//#include "pong.h"
+#include "msp430x54x.h"
+#include "hal_lcd.h"
+#include "pong.h"
 
-void drawPaddle() {
-	// Only worry about drawing the paddle
-	// at it's current location
+void erasePaddle(Paddle* myPaddle) {
+	int paddleLength	=	myPaddle->length;
+	int rightX			=	myPaddle->x + paddleLength/2;
+	int leftX			=	myPaddle->x - paddleLength/2;
+
+	halLcdLine(leftX, myPaddle->y, rightX, myPaddle->y, PIXEL_OFF);
 }
 
 /*
-void movePaddle(int direction) {
-	// Clear the paddle first or the screen
-	switch(direction) {
-		case UP:
-			break;
-		case DOWN:
-			break;
-		case 0:
-			break;
+ * Draw the Paddle from it's center x and y coordinates
+ */
+void drawPaddle(Paddle* myPaddle) {
+	int paddleLength	=	myPaddle->length;
+	int rightX			=	myPaddle->x + paddleLength/2;
+	int leftX			=	myPaddle->x - paddleLength/2;
+
+	if (rightX > WIDTH) {
+		myPaddle->x		=	WIDTH - paddleLength/2;
+		rightX			=	myPaddle->x + paddleLength/2;
+		leftX			=	myPaddle->x - paddleLength/2;
 	}
-}*/
+	if (leftX < 0) {
+		myPaddle->x		=	paddleLength/2;
+		rightX			=	myPaddle->x + paddleLength/2;
+		leftX			=	myPaddle->x - paddleLength/2;
+	}
+
+	halLcdLine(leftX, myPaddle->y, rightX, myPaddle->y, PIXEL_ON);
+}
+
+
+void movePaddle(Paddle* myPaddle, int newX ) {
+	// Clear the paddle first
+	erasePaddle(myPaddle);
+
+	// Update the paddle's x coordinate;
+	myPaddle->x = newX;
+
+	// Draw the paddle
+	drawPaddle(myPaddle);
+}
