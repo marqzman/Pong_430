@@ -123,11 +123,11 @@ void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
 
 	checkPaddle(myBall, paddle1);
 	buffer[6] = '0' + paddle1->score;
-	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
+	halLcdPrintLine(buffer, 8, OVERWRITE_TEXT);
 
 	checkPaddle(myBall, paddle2);
 	buffer[6] = '0' + paddle2->score;
-	halLcdPrintLine(buffer, 8, OVERWRITE_TEXT);
+	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
 
 	updateBall(myBall);
 }

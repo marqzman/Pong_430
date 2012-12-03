@@ -10,6 +10,7 @@ Paddle paddle1;
 Paddle paddle2;
 
 void makeBall(Ball* ball, int radius, int x, int y) {
+	ball->radius	=	2;
 	ball->x		=	x;
 	ball->y		=	y;
 	ball->dx	=	1;
@@ -85,7 +86,10 @@ void startDoubleGame() {
 		paddle2X = (paddle2X - 1) % WIDTH;	// Testing
 
 		movePaddle(&paddle1, paddle1X);				// Testing
-		movePaddle(&paddle2, fabs(paddle2X));		// Testing
+		if(paddle2X < paddle2.length) {
+			paddle2X = WIDTH - paddle2.length;
+		}
+		movePaddle(&paddle2, paddle2X);		// Testing
 
 		__delay_cycles(100000);
 	}
