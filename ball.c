@@ -78,6 +78,7 @@ void checkWalls(Ball *myBall){
 	}
 
 	if((myBall->y <= myRadius) || (myBall->y >= (HEIGHT - myRadius))) {	// Check the Top and Bottom walls
+		//gameOver++;
 		myBall->dy = -1*(myBall->dy);
 	}
 }
@@ -90,6 +91,11 @@ void checkPaddle(Ball* myBall, Paddle* myPaddle) {
 		myBall->dy *= -1;
 		myPaddle->score += 1;
 	}
+	// If player 1 scored
+		// P1OUT ^= BIT1;              // toggle P1.1
+	// else
+		// P2OUT ^= BIT1;              // toggle P1.1
+
 	//buffer[6] = '0' + myPaddle->score;
 	//halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
 }
@@ -100,34 +106,34 @@ void updateBall(Ball *myBall){
 	// Check for a bounce
 	checkWalls(myBall);
 	// Update the ball's position
-	myBall->x += SPEED*myBall->dx;
-	myBall->y += SPEED*myBall->dy;
+	myBall->x += getLevel()*myBall->dx;
+	myBall->y += getLevel()*myBall->dy;
 	// Draw the ball in it's new location
 	drawBall(myBall);
 }
 
 /* For Single Player Mode */
 void moveBall(Ball* myBall, Paddle* myPaddle) {
-	char buffer[7] = {"S" "C" "O" "R" "E" " "};
+	char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, myPaddle);
-	buffer[6] = '0' + myPaddle->score;
-	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
+	SCORE[6] = '0' + myPaddle->score;
+	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
 	updateBall(myBall);
 }
 
 /* For Double Player or Computer Mode */
 void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
-	char buffer[7] = {"S" "C" "O" "R" "E" " "};
+	char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, paddle1);
-	buffer[6] = '0' + paddle1->score;
-	halLcdPrintLine(buffer, 8, OVERWRITE_TEXT);
+	SCORE[6] = '0' + paddle1->score;
+	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
 	checkPaddle(myBall, paddle2);
-	buffer[6] = '0' + paddle2->score;
-	halLcdPrintLine(buffer, 0, OVERWRITE_TEXT);
+	SCORE[6] = '0' + paddle2->score;
+	halLcdPrintLine(SCORE, 8, OVERWRITE_TEXT);
 
 	updateBall(myBall);
 }

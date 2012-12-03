@@ -1,6 +1,7 @@
 #include "msp430x54x.h"
 #include "hal_lcd.h"
 #include "pong.h"
+//#include <stdio.h>
 
 void erasePaddle(Paddle* myPaddle) {
 	int paddleLength	=	myPaddle->length;
@@ -36,6 +37,8 @@ void drawPaddle(Paddle* myPaddle) {
 void movePaddle(Paddle* myPaddle, int newX ) {
 	// Clear the paddle first
 	erasePaddle(myPaddle);
+	//printf("%d\n", newX);
+
 
 	// Update the paddle's x coordinate;
 	myPaddle->x = newX;
