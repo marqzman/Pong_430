@@ -5,11 +5,8 @@
 //#include <math.h>
 
 #include "pong.h"
-//#include "hal_lcd_fonts.h"
 
-//struct ball* myBall;
-
-// Whatever.....
+char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 /* ERASE THE CIRCLE */
 void eraseBall(Ball *myBall) {
@@ -100,7 +97,7 @@ void checkPaddle(Ball* myBall, Paddle* myPaddle) {
 	//halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
 }
 
-void updateBall(Ball *myBall){
+void updateBall(Ball* myBall){
 	// Erase the current location of the ball
 	eraseBall(myBall);
 	// Check for a bounce
@@ -114,7 +111,7 @@ void updateBall(Ball *myBall){
 
 /* For Single Player Mode */
 void moveBall(Ball* myBall, Paddle* myPaddle) {
-	char SCORE[7] = {"S" "C" "O" "R" "E" " "};
+	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, myPaddle);
 	SCORE[6] = '0' + myPaddle->score;
@@ -125,15 +122,15 @@ void moveBall(Ball* myBall, Paddle* myPaddle) {
 
 /* For Double Player or Computer Mode */
 void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
-	char SCORE[7] = {"S" "C" "O" "R" "E" " "};
+	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, paddle1);
 	SCORE[6] = '0' + paddle1->score;
-	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
+	halLcdPrintLine(SCORE, 8, OVERWRITE_TEXT);
 
 	checkPaddle(myBall, paddle2);
 	SCORE[6] = '0' + paddle2->score;
-	halLcdPrintLine(SCORE, 8, OVERWRITE_TEXT);
+	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
 	updateBall(myBall);
 }

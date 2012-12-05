@@ -117,7 +117,12 @@ initJoyStick() {
 
 }
 
+//char single[6]		= {"U" "P" "-" "1" "P" " "};
 int level = EASY;
+//char two[9] 		= {"R" "I" "G" "H" "T" "-" "2" "P" " "};
+int menuLoc;
+int mode;
+//char computer[14]	= {"D" "O" "W" "N" "-" "V" "S" " " "M" "S" "P" "4" "3" "0"};
 
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
@@ -127,17 +132,42 @@ int main() {
 
 	__delay_cycles(200000);
 
-	//char single[2]		= {"1" "P"};
-	//char two[2] 		= {"2" "P"};
-	//char computer[10]	= {"V" "S" " " "M" "S" "P" "4" "3" "0"};
+	//play(SINGLE);
+	//play(DOUBLE);
 
-	//halLcdPrintLine(single, 2, OVERWRITE_TEXT);
-	//halLcdPrintLine(two, 4, OVERWRITE_TEXT);
-	//halLcdPrintLine(computer, 6, OVERWRITE_TEXT);
+
+	setMenuLoc(MODESELECT);
+
+
+	//__delay_cycles(200000);
+
+	//__delay_cycles(200000);
+
+	//__delay_cycles(200000);
+
+	// Go to low power mode to wait for the user input
+	//__bis_SR_register(LPM0_bits + GIE);
+	/*
+	while(menuLoc == MODESELECT) {
+		halLcdPrintLine("UP - 1 player", 1, OVERWRITE_TEXT);
+		halLcdPrintLine("Right - 2 player", 4, OVERWRITE_TEXT);
+		halLcdPrintLine("Down - vs. MSP430", 7, OVERWRITE_TEXT);
+	}
+
+	halLcdClearScreen();
+	setMenuLoc(DIFFSELECT);
+	while(menuLoc == DIFFSELECT) {
+		halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
+	} */
 
 	//__bis_SR_register(LPM0_bits + GIE);
-
-	play(SINGLE);
+	//while(1) {
+		play(SINGLE);
+		//startSingleGame();
+		//__bis_SR_register(LPM0_bits + GIE);
+		//halLcdClearScreen();
+	//}
+	//play(SINGLE);
 	//start1PlayerGame();
 	
 	//halLcdPrintLine("PONG", 2, OVERWRITE_TEXT);
@@ -149,42 +179,64 @@ int main() {
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void) {
     if(P2IFG & BIT4) {		// Up is pressed
-    	//play(SINGLE);
-        halLcdPrintLine("UP    ", 5, OVERWRITE_TEXT );
+    	halLcdPrintLine("UP    ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT4;
+        if(menuLoc == MODESELECT) {
+        	mode = SINGLE;
+        	menuLoc = DIFFSELECT;
+        	//play(SINGLE);
+        }
 
         __delay_cycles(20000);
     }
     else if(P2IFG & BIT2) {		// Right is pressed
-    	play(DOUBLE);
-    	//halLcdPrintLine("RIGHT ", 5, OVERWRITE_TEXT );
+    	halLcdPrintLine("RIGHT ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT2;
+        if(menuLoc == MODESELECT) {
+        	//play(DOUBLE);
+        }
 
         __delay_cycles(20000);
         }
     else if(P2IFG & BIT5) {		// Down is Pressed
-    	play(COMPUTER);
-        //halLcdPrintLine("DOWN  ", 5, OVERWRITE_TEXT );
+    	halLcdPrintLine("DOWN  ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT5;
+        if(menuLoc == MODESELECT) {
+        	//play(COMPUTER);
+        }
 
         __delay_cycles(20000);
     }
-    else if(P2IFG & BIT6) {		// Left Button is pressed
-    	level = MEDIUM;
+    else if(P2IFG & BIT6) {		// Left BUTTON is pressed
+    	halLcdPrintLine("EASY  ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT6;  // Clear Interrupt Flag for P2.6
+        if(menuLoc == DIFFSELECT) {
+        	level = EASY;
+        	menuLoc = 0;
+        }
 
         __delay_cycles(20000);
     }
-    else if(P2IFG & BIT7) {		// Right Button is pressed
-    	level = MEDIUM;
-        P1IFG &= ~0x010;                          // P1.4 IFG cleared
+    else if(P2IFG & BIT7) {		// Right BUTTON is pressed
+    	halLcdPrintLine("MEDIUM ", 0, OVERWRITE_TEXT );
+        P2IFG &= ~BIT7;                          // P1.7 IFG cleared
+        if(menuLoc == DIFFSELECT) {
+        	level = MEDIUM;
+        }
 
         __delay_cycles(20000);
 	}
+    __bic_SR_register_on_exit(LPM0_bits);
+
+    P1IFG &= ~0X010;
 }
 
 int getLevel() {
 	return level;
+}
+
+void setMenuLoc(int menuLocation) {
+	menuLoc = menuLocation;
 }
 
 

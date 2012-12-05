@@ -20,9 +20,14 @@
 #define DOUBLE		2
 #define COMPUTER	3
 
+// Difficulties
 #define EASY		1
 #define MEDIUM		2
 #define	HARD		3
+
+// Location in the Menu
+#define MODESELECT	1
+#define DIFFSELECT	2
 
 //#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
 //#define BOUNCE(newDeg)		newDeg = 180 + newDeg
@@ -48,6 +53,10 @@ typedef struct {
 } Paddle;
 
 /*********FUNCTION AND GLOBAL VARIABLE PROTOTYPES*********/
+// main.c
+int getLevel();
+void setMenuLoc(int menuLocation);
+
 //	board.c
 void makeBall(Ball* ball, int radius, int x, int y);
 void makePaddle(Paddle* paddle, int length, int x, int y);

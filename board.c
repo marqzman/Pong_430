@@ -6,11 +6,13 @@
 #include <math.h>
 
 /* PROTOTYPES*/
+char easy[4] = {"E" "A" "S" "Y"};
 void initADC(void);
 void startADC1(void);
 void startSingleGame(void);
 void startDoubleGame(void);
 int getX(void);
+char med[6]	= {"M" "E" "D" "I" "U" "M"};
 
 Ball theBall;
 Paddle paddle1;
@@ -48,6 +50,14 @@ void makePaddle(Paddle* paddle, int length, int x, int y) {
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
 	halLcdClearScreen();
+	//setMenuLoc(DIFFSELECT);
+
+	//halLcdPrintLine(easy, 2, OVERWRITE_TEXT);
+	//halLcdPrintLine(med, 8, OVERWRITE_TEXT);
+	//halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
+	//__bis_SR_register(LPM0_bits + GIE);
+	//halLcdClearScreen();
+
 	initADC();
 	switch(mode) {
 		case SINGLE:
@@ -63,7 +73,7 @@ void play(int mode) {
 
 // Starts a Single Player Game
 void startSingleGame() {
-	//int paddleX = WIDTH/2;
+	int paddleX = WIDTH/2;
 	// Make and draw the paddle
 	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 12);
 	drawPaddle(&paddle1);
@@ -78,7 +88,7 @@ void startSingleGame() {
 
 		moveBall(&theBall, &paddle1);
 
-		//paddleX = (paddleX + 1) % WIDTH;	// Testing
+		paddleX = (paddleX + 1) % WIDTH;	// Testing
 		//newX1 = (x_axis_sample/0XFFF)*WIDTH;
 		//newX2 = (y_axis_sample/0XFFF)*WIDTH;
 		//newX3 = (z_axis_sample/0XFFF)*WIDTH;
@@ -86,7 +96,8 @@ void startSingleGame() {
 		//xyz *= WIDTH;
 		//xyz /= 4095;
 
-		movePaddle(&paddle1, xyz);	// Testing
+		//movePaddle(&paddle1, xyz);	// Testing
+		movePaddle(&paddle1, paddleX);	// Testing
 		//movePaddle(&paddle1, newX2);	// Testing
 		//movePaddle(&paddle1, newX3);	// Testing
 
@@ -96,8 +107,8 @@ void startSingleGame() {
 
 // Starts a Two Player Game
 void startDoubleGame() {
-	int paddle1X = WIDTH/2;
-	int paddle2X = WIDTH/2;
+	int paddle1X = WIDTH/2;				// Testing; Move paddle automatically
+	int paddle2X = WIDTH/2;				// Testing; Move paddle automatically
 
 	// Make and draw player 1's paddle
 	makePaddle(&paddle1, 6, WIDTH/2, HEIGHT - 12);
@@ -122,7 +133,7 @@ void startDoubleGame() {
 		if(paddle2X < paddle2.length) {
 			paddle2X = WIDTH - paddle2.length;
 		}
-		movePaddle(&paddle2, paddle2X);		// Testing
+		movePaddle(&paddle2, paddle2X);			// Testing
 
 		__delay_cycles(100000);
 	}
