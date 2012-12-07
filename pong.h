@@ -59,6 +59,7 @@ typedef struct {
 /*********FUNCTION AND GLOBAL VARIABLE PROTOTYPES*********/
 // main.c
 int getLevel();
+int getMode();
 //void setMenuLoc(int menuLocation);
 
 //	board.c

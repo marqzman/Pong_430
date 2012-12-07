@@ -80,13 +80,43 @@ void checkWalls(Ball *myBall){
 	}
 }
 
+void checkWalls2(Ball *myBall, Paddle* top, Paddle* bottom){
+	int myRadius = myBall->radius;
+	if((myBall->x <= myRadius) || (myBall->x >= (WIDTH - myRadius))) {	// Check the Left and Right walls
+		myBall->dx = -1*(myBall->dx);
+	}
+
+	if((myBall->y <= myRadius)) { 	// Check the Top wall
+		bottom->score++;
+		myBall->dy = -1*(myBall->dy);
+	} else if(myBall->y >= (HEIGHT - myRadius)) { // Check the Bottom wall
+		top->score++;
+		myBall->dy = -1*(myBall->dy);
+	}
+}
+
+void checkMiss(Ball* myBall, Paddle* myPaddle) {
+	if(myPaddle->y == 14 && (myBall->y < myPaddle->y)) {
+		// MISS
+		myPaddle->score = 0;
+		endGame();
+	}else if(myPaddle->y == HEIGHT - 14 && (myBall->y > myPaddle->y)) {
+		// MISS
+		myPaddle->score = 0;
+		endGame();
+	}
+}
 void checkPaddle(Ball* myBall, Paddle* myPaddle) {
 	//char buffer[7] = {"S" "C" "O" "R" "E" " "};
 	int leftX	= myPaddle->x - (myPaddle->length)/2;
 	int rightX	= myPaddle->x + (myPaddle->length)/2;
 	if(((myBall->y + (myBall->radius)*myBall->dy) == myPaddle->y) && (myBall->x + myBall->radius >= leftX) && (myBall->x - myBall->radius <= rightX)) {
 		myBall->dy *= -1;
-		myPaddle->score += 1;
+		if(getMode() == SINGLE) {
+			myPaddle->score += 1;
+		}
+	} else if(getMode() == SINGLE){
+		checkMiss(myBall, myPaddle);
 	}
 	// If player 1 scored
 		// P1OUT ^= BIT1;              // toggle P1.1
@@ -102,6 +132,18 @@ void updateBall(Ball* myBall){
 	eraseBall(myBall);
 	// Check for a bounce
 	checkWalls(myBall);
+	// Update the ball's position
+	myBall->x += getLevel()*myBall->dx;
+	myBall->y += getLevel()*myBall->dy;
+	// Draw the ball in it's new location
+	drawBall(myBall);
+}
+
+void updateBall2(Ball* myBall, Paddle* top, Paddle* bottom){
+	// Erase the current location of the ball
+	eraseBall(myBall);
+	// Check for a bounce
+	checkWalls2(myBall, top, bottom);
 	// Update the ball's position
 	myBall->x += getLevel()*myBall->dx;
 	myBall->y += getLevel()*myBall->dy;
@@ -136,5 +178,5 @@ void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
 	SCORE[7] = '0' + (paddle2->score)%10;
 	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
-	updateBall(myBall);
+	updateBall2(myBall, paddle2, paddle1);
 }

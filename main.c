@@ -120,6 +120,7 @@ int main() {
 	initCP();
 	__bis_SR_register(GIE);
 	mode = SINGLE;
+	menuLoc = MODESELECT;
 
 
 	// Go to low power mode to wait for the user input
@@ -130,25 +131,25 @@ int main() {
 		halLcdPrintLine("Hello World", 5, OVERWRITE_TEXT);
 	} */
 
-	play(DOUBLE);
+	//play(SINGLE);
 	//setMenuLoc(MODESELECT);
 	while(1) {
-		menuLoc = MODESELECT;
-		while(menuLoc == MODESELECT) {
-			halLcdPrintLine("UP - 1 player", 1, OVERWRITE_TEXT);
-			halLcdPrintLine("Right - 2 player", 4, OVERWRITE_TEXT);
-			halLcdPrintLine("Down - vs. MSP430", 7, OVERWRITE_TEXT);
-		}
-		halLcdClearScreen();
+		if(menuLoc != INGAME) {
+			while(menuLoc == MODESELECT) {
+				halLcdPrintLine("UP - 1 player", 1, OVERWRITE_TEXT);
+				halLcdPrintLine("Right - 2 player", 4, OVERWRITE_TEXT);
+				halLcdPrintLine("Down - vs. MSP430", 7, OVERWRITE_TEXT);
+			}
+			halLcdClearScreen();
 
-		//setMenuLoc(DIFFSELECT);
-		menuLoc = DIFFSELECT;
-		while(menuLoc == DIFFSELECT) {
-			halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
+			//setMenuLoc(DIFFSELECT);
+			menuLoc = DIFFSELECT;
+			while(menuLoc == DIFFSELECT) {
+				halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
+			}
+			//setMenuLoc(INGAME);
+			menuLoc = INGAME;
 		}
-		//setMenuLoc(INGAME);
-		menuLoc = INGAME;
-
 		play(mode);
 	}
 }
@@ -209,6 +210,7 @@ __interrupt void Port_2(void) {
 		// Clear the flag
 		P2IFG &= ~BIT3;
 		endGame();
+		menuLoc = MODESELECT;
 
 		//halLcdClearScreen();
 		//halLcdPrintLine("OVER   ", 0, OVERWRITE_TEXT );
@@ -226,11 +228,9 @@ int getLevel() {
 	return level;
 }
 
-/*
-void setMenuLoc(int menuLocation) {
-	menuLoc = menuLocation;
-}*/
-
+int getMode() {
+	return mode;
+}
 
 /*Functions from LAB 3*/
 	void halBoardStartXT1(void) {

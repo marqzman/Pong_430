@@ -47,12 +47,31 @@ void makePaddle(Paddle* paddle, int length, int x, int y) {
 	paddle->score	=	0;
 }
 
+void prepare() {
+	char buff [6] = {" " " " " " " " " " "\0"};
+	//char count [5] = {"3" "2" "1" "0" "\0"};
+	int j;
+	for(j = 3; j >= 0; j--) {
+		buff[4] = '0' + j;
+		halLcdPrintLine(buff, 4, OVERWRITE_TEXT);
+		unsigned long i;
+		for(i = 0; i < 500000; i++);
+		for(i = 0; i < 500000; i++);
+		for(i = 0; i < 500000; i++);
+		for(i = 0; i < 500000; i++);
+		for(i = 0; i < 500000; i++);
+		for(i = 0; i < 500000; i++);
+	}
+	halLcdClearScreen();
+}
+
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
 	initADC();
 	gameOver = FALSE;
 	halLcdClearScreen();
 	paddleLength /= getLevel();
+	prepare();
 	switch(mode) {
 		case SINGLE:
 			startSingleGame();
@@ -79,6 +98,7 @@ void startSingleGame() {
 
 	// Play till there is a loser
 	while(gameOver == FALSE) {
+		startADC();
 		/*
 		int i, temp, avg;
 		for(i = 0; i < 100; i ++) {
@@ -108,8 +128,9 @@ void startSingleGame() {
 		//movePaddle(&paddle1, newX2);	// Testing
 		//movePaddle(&paddle1, newX3);	// Testing
 
-		//__delay_cycles(100000);
+		__delay_cycles(100000);
 	}
+
 }
 
 // Starts a Two Player Game
@@ -159,7 +180,10 @@ void startDoubleGame() {
 		//}
 		movePaddle(&paddle2, pot2);			// Testing
 
-		//__delay_cycles(100000);
+		if((paddle1.score == 15) || (paddle2.score == 15)) {
+			endGame();
+		}
+		__delay_cycles(100000);
 	}
 }
 
