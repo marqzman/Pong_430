@@ -61,6 +61,7 @@ void play(int mode) {
 		case COMPUTER:
 			break;
 	}
+	halLcdClearScreen();
 }
 
 // Starts a Single Player Game

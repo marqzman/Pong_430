@@ -110,17 +110,9 @@ initJoyStick() {
 	P2IE |= BIT7;  	// enable Interrupt for P2.6
 }
 
-void disableIE() {
-	P2IE	&=  0X00;	// Disable all Interrupts
-}
-
-//char single[6]		= {"U" "P" "-" "1" "P" " "};
 int level = EASY;
-//char two[9] 		= {"R" "I" "G" "H" "T" "-" "2" "P" " "};
 int menuLoc;
 int mode;
-//char computer[14]	= {"D" "O" "W" "N" "-" "V" "S" " " "M" "S" "P" "4" "3" "0"};
-
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
 	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
@@ -217,7 +209,7 @@ __interrupt void Port_2(void) {
 		P2IFG &= ~BIT3;
 		endGame();
 
-		halLcdClearScreen();
+		//halLcdClearScreen();
 		//halLcdPrintLine("OVER   ", 0, OVERWRITE_TEXT );
 		__delay_cycles(1000000);
         P2IE |= (BIT2 + BIT4 + BIT5 + BIT6 + BIT7);
