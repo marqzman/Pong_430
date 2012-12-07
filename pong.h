@@ -66,6 +66,7 @@ void makeBall(Ball* ball, int radius, int x, int y);
 void makePaddle(Paddle* paddle, int length, int x, int y);
 void play(int mode);
 void endGame(void);
+void initADC();
 
 //	ball.c
 void drawBall(Ball *myBall);

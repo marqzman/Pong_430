@@ -130,6 +130,7 @@ int main() {
 		halLcdPrintLine("Hello World", 5, OVERWRITE_TEXT);
 	} */
 
+	play(DOUBLE);
 	//setMenuLoc(MODESELECT);
 	while(1) {
 		menuLoc = MODESELECT;
