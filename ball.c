@@ -75,7 +75,7 @@ void checkWalls(Ball *myBall){
 	}
 
 	if((myBall->y <= myRadius) || (myBall->y >= (HEIGHT - myRadius))) {	// Check the Top and Bottom walls
-		//gameOver++;
+		//endGame();
 		myBall->dy = -1*(myBall->dy);
 	}
 }

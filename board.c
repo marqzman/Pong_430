@@ -48,6 +48,7 @@ void makePaddle(Paddle* paddle, int length, int x, int y) {
 
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
+	gameOver = FALSE;
 	halLcdClearScreen();
 	//initADC();
 	switch(mode) {
