@@ -11,6 +11,7 @@ char easy[5] = {"E" "A" "S" "Y" "\0"};
 void startADC(void);
 void startSingleGame(void);
 void startDoubleGame(void);
+void startComputerGame(void);
 int getX(void);
 char med[7]	= {"M" "E" "D" "I" "U" "M" "\0"};
 
@@ -25,7 +26,7 @@ int xyz = 0;
 
 
 int gameOver = 0;
-int paddleLength = 12;
+int paddleLength = 0;
 
 //float newX1 = 0.0;
 //int newX2 = 0;
@@ -36,7 +37,7 @@ void makeBall(Ball* ball, int radius, int x, int y) {
 	ball->radius	=	2;
 	ball->x		=	x;
 	ball->y		=	y;
-	ball->dx	=	1;
+	ball->dx	=	(rand() % 2);
 	ball->dy	=	1;
 }
 
@@ -70,8 +71,8 @@ void play(int mode) {
 	initADC();
 	gameOver = FALSE;
 	halLcdClearScreen();
-	paddleLength /= getLevel();
 	prepare();
+	paddleLength = STARTLENGTH/getLevel();
 	switch(mode) {
 		case SINGLE:
 			startSingleGame();
@@ -80,6 +81,7 @@ void play(int mode) {
 			startDoubleGame();
 			break;
 		case COMPUTER:
+			startComputerGame();
 			break;
 	}
 	halLcdClearScreen();
@@ -184,6 +186,43 @@ void startDoubleGame() {
 			endGame();
 		}
 		__delay_cycles(100000);
+	}
+}
+
+void startComputerGame() {
+	int compCounter = 0;
+	// Make and draw player 1's paddle
+	makePaddle(&paddle1, paddleLength, WIDTH/2, HEIGHT - 14);
+	drawPaddle(&paddle1);
+
+	// Make and draw the computer's paddle
+	makePaddle(&paddle2, paddleLength, WIDTH/2, 14);
+	drawPaddle(&paddle2);
+
+	// Make and draw the ball
+	makeBall(&theBall, 2, WIDTH/2, HEIGHT/2);
+	drawBall(&theBall);
+
+	while(gameOver == FALSE) {
+		compCounter++;
+		startADC();
+		moveBall2(&theBall, &paddle1, &paddle2);
+		pot1 /= 30;
+		movePaddle(&paddle1, pot1);
+		int temp = fabs(getLevel() - 4)/1;
+		int turn = compCounter%temp;
+		if(turn == 0) {
+			// Move the AI
+			if(theBall.x < paddle2.x) {
+				movePaddle(&paddle2, paddle2.x - 1);
+			} else if(theBall.x > paddle2.x) {
+				movePaddle(&paddle2, paddle2.x + 1);
+			}
+		}
+
+		if((paddle1.score == 15) || (paddle2.score == 15)) {
+			endGame();
+		}
 	}
 }
 

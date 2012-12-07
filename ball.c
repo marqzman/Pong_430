@@ -133,8 +133,8 @@ void updateBall(Ball* myBall){
 	// Check for a bounce
 	checkWalls(myBall);
 	// Update the ball's position
-	myBall->x += getLevel()*myBall->dx;
-	myBall->y += getLevel()*myBall->dy;
+	myBall->x += myBall->dx;
+	myBall->y += myBall->dy;
 	// Draw the ball in it's new location
 	drawBall(myBall);
 }

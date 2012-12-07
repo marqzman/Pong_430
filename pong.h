@@ -27,6 +27,7 @@
 #define EASY		1
 #define MEDIUM		2
 #define	HARD		3
+#define STARTLENGTH	12
 
 // Location in the Menu
 #define MODESELECT	1

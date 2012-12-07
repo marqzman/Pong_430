@@ -181,7 +181,7 @@ __interrupt void Port_2(void) {
     	//halLcdPrintLine("DOWN  ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT5;
         if(menuLoc == MODESELECT) {
-        	mode = SINGLE;
+        	mode = COMPUTER;
         	menuLoc = DIFFSELECT;
         	P2IE &= ~(BIT4 + BIT2 + BIT5);
         }
