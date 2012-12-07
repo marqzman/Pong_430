@@ -8,7 +8,8 @@
 
 char SCORE[9] = {"S" "C" "O" "R" "E" " " " " " " "\0"};
 
-/* ERASE THE CIRCLE */
+/* Erase the ball at it's current location
+ * MUST BE CALLED BEFORE THE BALL IS DRAWN */
 void eraseBall(Ball *myBall) {
 	halLcdPixel(myBall->x-1, myBall->y+2, PIXEL_OFF);
 	halLcdPixel(myBall->x-0, myBall->y+2, PIXEL_OFF);
@@ -37,8 +38,7 @@ void eraseBall(Ball *myBall) {
 	halLcdPixel(myBall->x+1, myBall->y-2, PIXEL_OFF);
 }
 
-// Call the LCD functins to draw a ball
-// at it's current location
+/* Draw the ball at it's current location*/
 void drawBall(Ball *myBall) {
 	halLcdPixel(myBall->x-1, myBall->y+2, PIXEL_ON);
 	halLcdPixel(myBall->x-0, myBall->y+2, PIXEL_ON);
@@ -68,6 +68,8 @@ void drawBall(Ball *myBall) {
 
 }
 
+/* Single Player Mode
+ * Bounces off all 4 Walls*/
 void checkWalls(Ball *myBall){
 	int myRadius = myBall->radius;
 	if((myBall->x <= myRadius) || (myBall->x >= (WIDTH - myRadius))) {	// Check the Left and Right walls
@@ -75,11 +77,14 @@ void checkWalls(Ball *myBall){
 	}
 
 	if((myBall->y <= myRadius) || (myBall->y >= (HEIGHT - myRadius))) {	// Check the Top and Bottom walls
-		//endGame();
 		myBall->dy = -1*(myBall->dy);
 	}
 }
 
+/* Multi-player Mode
+ * Bounces off the Left and Right Walls
+ * Increments the score of the player that successfully made it past the other player
+ * Bounces off the Top and Bottom Walls*/
 void checkWalls2(Ball *myBall, Paddle* top, Paddle* bottom){
 	int myRadius = myBall->radius;
 	if((myBall->x <= myRadius) || (myBall->x >= (WIDTH - myRadius))) {	// Check the Left and Right walls
@@ -95,13 +100,11 @@ void checkWalls2(Ball *myBall, Paddle* top, Paddle* bottom){
 	}
 }
 
+/* Single Player mode
+ * Checks to see of the player missed the ball
+ * If the player missed the ball, the game is over*/
 void checkMiss(Ball* myBall, Paddle* myPaddle) {
-	if(myPaddle->y == 14 && (myBall->y < myPaddle->y)) {
-		// MISS
-		myPaddle->score = 0;
-		endGame();
-	}else if(myPaddle->y == HEIGHT - 14 && (myBall->y > myPaddle->y)) {
-		// MISS
+	if(myBall->y >= (HEIGHT - myBall->radius)) {
 		myPaddle->score = 0;
 		endGame();
 	}
@@ -118,45 +121,46 @@ void checkPaddle(Ball* myBall, Paddle* myPaddle) {
 	} else if(getMode() == SINGLE){
 		checkMiss(myBall, myPaddle);
 	}
-	// If player 1 scored
-		// P1OUT ^= BIT1;              // toggle P1.1
-	// else
-		// P2OUT ^= BIT1;              // toggle P1.1
-
-	//buffer[6] = '0' + myPaddle->score;
-	//halLcdPrintLine(buffer, 1, OVERWRITE_TEXT);
 }
 
+/* For Single Player mode
+ * Changes the ball's position and re-draws it
+ * Checks the walls for a bounce
+ * */
 void updateBall(Ball* myBall){
 	// Erase the current location of the ball
 	eraseBall(myBall);
+
 	// Check for a bounce
 	checkWalls(myBall);
+
 	// Update the ball's position
 	myBall->x += myBall->dx;
 	myBall->y += myBall->dy;
+
 	// Draw the ball in it's new location
 	drawBall(myBall);
 }
 
+/* For Double Player or Computer Mode*/
 void updateBall2(Ball* myBall, Paddle* top, Paddle* bottom){
 	// Erase the current location of the ball
 	eraseBall(myBall);
+
 	// Check for a bounce
 	checkWalls2(myBall, top, bottom);
+
 	// Update the ball's position
 	myBall->x += myBall->dx;
 	myBall->y += myBall->dy;
+
 	// Draw the ball in it's new location
 	drawBall(myBall);
 }
 
 /* For Single Player Mode */
 void moveBall(Ball* myBall, Paddle* myPaddle) {
-	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
-
 	checkPaddle(myBall, myPaddle);
-	//SCORE[6] = '0' + (myPaddle->score);
 	SCORE[6] = '0' + (myPaddle->score)/10;
 	SCORE[7] = '0' + (myPaddle->score)%10;
 	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
@@ -166,8 +170,6 @@ void moveBall(Ball* myBall, Paddle* myPaddle) {
 
 /* For Double Player or Computer Mode */
 void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
-	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
-
 	checkPaddle(myBall, paddle1);
 	SCORE[6] = '0' + (paddle1->score)/10;
 	SCORE[7] = '0' + (paddle1->score)%10;

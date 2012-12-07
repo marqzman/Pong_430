@@ -97,8 +97,6 @@ initJoyStick() {
 
 
 	// Configure button on P2.7
-	// Flag is used but no interrupt is generated
-
 	P2OUT |= BIT7;  // Configure output as High
 	P2DIR &= ~BIT7; // Configure pin direction as input - overrides setting to high
 	P2REN |= BIT7;  // Enable Pull-up resistor
@@ -116,23 +114,13 @@ int mode;
 int main() {
 	WDTCTL = WDTPW + WDTHOLD;           // Stop WDT
 	P1DIR |= BIT0 + BIT1;               // P1.0 and P1.1 LEDs configured as output
-	initJoyStick();
-	initCP();
-	__bis_SR_register(GIE);
+	P1OUT &= ~(BIT0 + BIT1);
+	initJoyStick();						// Initialize Port 2
+	initCP();							// Initialize the Clock and LCD
+	__bis_SR_register(GIE);				// General Interrupt Enable
+
 	mode = SINGLE;
 	menuLoc = MODESELECT;
-
-
-	// Go to low power mode to wait for the user input
-	//__bis_SR_register(LPM0_bits + GIE);
-
-	/* TESTING LOOP
-	while(1) {
-		halLcdPrintLine("Hello World", 5, OVERWRITE_TEXT);
-	} */
-
-	//play(SINGLE);
-	//setMenuLoc(MODESELECT);
 	while(1) {
 		if(menuLoc != INGAME) {
 			while(menuLoc == MODESELECT) {
@@ -142,12 +130,10 @@ int main() {
 			}
 			halLcdClearScreen();
 
-			//setMenuLoc(DIFFSELECT);
 			menuLoc = DIFFSELECT;
 			while(menuLoc == DIFFSELECT) {
 				halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
 			}
-			//setMenuLoc(INGAME);
 			menuLoc = INGAME;
 		}
 		play(mode);
@@ -158,7 +144,6 @@ int main() {
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void) {
     if(P2IFG & BIT4) {		// Up is pressed
-    	//halLcdPrintLine("UP    ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT4;
         if(menuLoc == MODESELECT) {
         	mode = SINGLE;
@@ -168,7 +153,6 @@ __interrupt void Port_2(void) {
         __delay_cycles(20000);
     }
     else if(P2IFG & BIT2) {		// Right is pressed
-    	//halLcdPrintLine("RIGHT ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT2;
         if(menuLoc == MODESELECT) {
         	mode = DOUBLE;
@@ -178,7 +162,6 @@ __interrupt void Port_2(void) {
         __delay_cycles(20000);
         }
     else if(P2IFG & BIT5) {		// Down is Pressed
-    	//halLcdPrintLine("DOWN  ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT5;
         if(menuLoc == MODESELECT) {
         	mode = COMPUTER;
@@ -188,7 +171,6 @@ __interrupt void Port_2(void) {
         __delay_cycles(20000);
     }
     else if(P2IFG & BIT6) {		// Left BUTTON is pressed
-    	//halLcdPrintLine("EASY  ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT6;  // Clear Interrupt Flag for P2.6
         if(menuLoc == DIFFSELECT) {
         	level = EASY;
@@ -198,7 +180,6 @@ __interrupt void Port_2(void) {
         __delay_cycles(20000);
     }
     else if(P2IFG & BIT7) {		// Right BUTTON is pressed
-    	//halLcdPrintLine("MEDIUM ", 0, OVERWRITE_TEXT );
         P2IFG &= ~BIT7;                          // P1.7 IFG cleared
         if(menuLoc == DIFFSELECT) {
         	level = MEDIUM;
@@ -212,16 +193,10 @@ __interrupt void Port_2(void) {
 		endGame();
 		menuLoc = MODESELECT;
 
-		//halLcdClearScreen();
-		//halLcdPrintLine("OVER   ", 0, OVERWRITE_TEXT );
-		__delay_cycles(1000000);
-        P2IE |= (BIT2 + BIT4 + BIT5 + BIT6 + BIT7);
+		P2IE |= (BIT2 + BIT4 + BIT5 + BIT6 + BIT7);
         __bis_SR_register(GIE);
         __delay_cycles(20000);
     }
-    //__bic_SR_register_on_exit(LPM0_bits);
-
-    //P1IFG &= ~0x010;                          // P1.4 IFG cleared
 }
 
 int getLevel() {

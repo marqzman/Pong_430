@@ -1,15 +1,6 @@
 #ifndef PONG_H
 #define PONG_H
 
-//#define RIGHT		0
-//#define DOWNRIGHT	45
-//#define DOWN		90
-//#define DOWNLEFT	135
-//#define LEFT		180
-//#define UPLEFT		225
-//#define UP			270
-//#define UPRIGHT		315
-
 #define TRUE		1
 #define FALSE		0
 
@@ -34,10 +25,6 @@
 #define DIFFSELECT	2
 #define INGAME		3
 
-//#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
-//#define BOUNCE(newDeg)		newDeg = 180 + newDeg
-//#define BOUNCE(rad)	((rad < PI) ? (rad += PI) : (rad -= PI))
-
 /*********STRUCTS*********/
 typedef struct {
 	//int dir;
@@ -61,7 +48,6 @@ typedef struct {
 // main.c
 int getLevel();
 int getMode();
-//void setMenuLoc(int menuLocation);
 
 //	board.c
 void makeBall(Ball* ball, int radius, int x, int y);
