@@ -6,7 +6,7 @@
 
 #include "pong.h"
 
-char SCORE[7] = {"S" "C" "O" "R" "E" " "};
+char SCORE[9] = {"S" "C" "O" "R" "E" " " " " " " "\0"};
 
 /* ERASE THE CIRCLE */
 void eraseBall(Ball *myBall) {
@@ -114,7 +114,9 @@ void moveBall(Ball* myBall, Paddle* myPaddle) {
 	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, myPaddle);
-	SCORE[6] = '0' + myPaddle->score;
+	//SCORE[6] = '0' + (myPaddle->score);
+	SCORE[6] = '0' + (myPaddle->score)/10;
+	SCORE[7] = '0' + (myPaddle->score)%10;
 	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
 	updateBall(myBall);
@@ -125,11 +127,13 @@ void moveBall2(Ball* myBall, Paddle* paddle1, Paddle* paddle2) {
 	//char SCORE[7] = {"S" "C" "O" "R" "E" " "};
 
 	checkPaddle(myBall, paddle1);
-	SCORE[6] = '0' + paddle1->score;
+	SCORE[6] = '0' + (paddle1->score)/10;
+	SCORE[7] = '0' + (paddle1->score)%10;
 	halLcdPrintLine(SCORE, 8, OVERWRITE_TEXT);
 
 	checkPaddle(myBall, paddle2);
-	SCORE[6] = '0' + paddle2->score;
+	SCORE[6] = '0' + (paddle2->score)/10;
+	SCORE[7] = '0' + (paddle2->score)%10;
 	halLcdPrintLine(SCORE, 0, OVERWRITE_TEXT);
 
 	updateBall(myBall);

@@ -28,6 +28,7 @@
 // Location in the Menu
 #define MODESELECT	1
 #define DIFFSELECT	2
+#define INGAME		3
 
 //#define BOUNCE(deg)		((deg < 180) ? (deg += 180) : (deg -= 180))
 //#define BOUNCE(newDeg)		newDeg = 180 + newDeg

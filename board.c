@@ -6,21 +6,20 @@
 #include <math.h>
 
 /* PROTOTYPES*/
-char easy[4] = {"E" "A" "S" "Y"};
+char easy[5] = {"E" "A" "S" "Y" "\0"};
 void initADC(void);
 void startADC1(void);
 void startSingleGame(void);
 void startDoubleGame(void);
 int getX(void);
-char med[6]	= {"M" "E" "D" "I" "U" "M"};
+char med[7]	= {"M" "E" "D" "I" "U" "M" "\0"};
 
 Ball theBall;
 Paddle paddle1;
 Paddle paddle2;
 
-int x_axis_sample = 0;
-int y_axis_sample = 0;
-int z_axis_sample = 0;
+int pot1 = 0;
+
 int xyz = 0;
 
 
@@ -58,7 +57,7 @@ void play(int mode) {
 	//__bis_SR_register(LPM0_bits + GIE);
 	//halLcdClearScreen();
 
-	initADC();
+	//initADC();
 	switch(mode) {
 		case SINGLE:
 			startSingleGame();
@@ -84,7 +83,7 @@ void startSingleGame() {
 
 	// Play till there is a loser
 	while(gameOver == 0) {
-		startADC1();
+		//startADC1();
 
 		moveBall(&theBall, &paddle1);
 
@@ -92,7 +91,7 @@ void startSingleGame() {
 		//newX1 = (x_axis_sample/0XFFF)*WIDTH;
 		//newX2 = (y_axis_sample/0XFFF)*WIDTH;
 		//newX3 = (z_axis_sample/0XFFF)*WIDTH;
-		xyz = getX();
+		//xyz = getX();
 		//xyz *= WIDTH;
 		//xyz /= 4095;
 
@@ -141,7 +140,7 @@ void startDoubleGame() {
 
 // Start ADC Conversion Process
 void startADC1() {
-	ADC12IFG &= ~(BIT0);                 // Clear any pending flags
+	ADC12IFG &= ~(ADC12IFG12);                 // Clear any pending flags
 	ADC12CTL0 |=  ADC12ENC | ADC12SC;
 	ADC12IE |= ADC12IE12;
 
@@ -165,7 +164,7 @@ void initADC() {
 	ADC12MCTL2 = ADC12INCH_3 + ADC12EOS;
 	*/
 
-	// POTENTIOMETER
+	// Configure the POTENTIOMETER
 	P7SEL |= BIT4;               		// Enable A/D channel inputs p7.4
 	P7DIR &= ~(BIT4);             		// P7.4 is configured as input
 
@@ -175,22 +174,27 @@ void initADC() {
 	//P7DIR |= BIT0;                      // Enable ACC_POWER. Outputs from the MSP430 to the Peripheral module (ADXL322/330)
 	//P7OUT |= BIT0;                      // Turn on ACC_PWR
 
+	// Configure the ADC
 	ADC12CTL0 = ADC12ON + ADC12SHT02 + ADC12MSC;
 	ADC12CTL1 = ADC12SHP + ADC12CONSEQ_1 + ADC12SSEL_0;
 	ADC12CTL2 = ADC12RES_2;
 
 	ADC12MCTL12 = ADC12SREF_0 + ADC12INCH_12;
+
+	__delay_cycles(200000);
+
+	UCSCTL8 |= MODOSCREQEN;
 }
 
 int getX() {
-	return x_axis_sample;
+	return pot1;
 }
 
 #pragma vector=ADC12_VECTOR
 __interrupt void ADC12_ISR(void)
 {
 	//x_axis_sample = ADC12MEM0;
-	x_axis_sample = ADC12MEM12;
+	pot1 = ADC12MEM12;
 	//x_axis_sample /= 10;
 	//y_axis_sample = ADC12MEM1;
 	//z_axis_sample = ADC12MEM2;
