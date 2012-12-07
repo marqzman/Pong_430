@@ -10,6 +10,9 @@
 //#define UP			270
 //#define UPRIGHT		315
 
+#define TRUE		1
+#define FALSE		0
+
 #define HEIGHT		109
 #define WIDTH		137
 
@@ -56,12 +59,13 @@ typedef struct {
 /*********FUNCTION AND GLOBAL VARIABLE PROTOTYPES*********/
 // main.c
 int getLevel();
-void setMenuLoc(int menuLocation);
+//void setMenuLoc(int menuLocation);
 
 //	board.c
 void makeBall(Ball* ball, int radius, int x, int y);
 void makePaddle(Paddle* paddle, int length, int x, int y);
 void play(int mode);
+void endGame(void);
 
 //	ball.c
 void drawBall(Ball *myBall);

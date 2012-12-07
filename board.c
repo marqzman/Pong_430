@@ -49,14 +49,6 @@ void makePaddle(Paddle* paddle, int length, int x, int y) {
 // mode = Single player; 2 Player; Agains MSP430
 void play(int mode) {
 	halLcdClearScreen();
-	//setMenuLoc(DIFFSELECT);
-
-	//halLcdPrintLine(easy, 2, OVERWRITE_TEXT);
-	//halLcdPrintLine(med, 8, OVERWRITE_TEXT);
-	//halLcdPrintLine("Easy       Medium", 8, OVERWRITE_TEXT);
-	//__bis_SR_register(LPM0_bits + GIE);
-	//halLcdClearScreen();
-
 	//initADC();
 	switch(mode) {
 		case SINGLE:
@@ -82,7 +74,7 @@ void startSingleGame() {
 	drawBall(&theBall);
 
 	// Play till there is a loser
-	while(gameOver == 0) {
+	while(gameOver == FALSE) {
 		//startADC1();
 
 		moveBall(&theBall, &paddle1);
@@ -122,7 +114,7 @@ void startDoubleGame() {
 	drawBall(&theBall);
 
 	// Play forever
-	while(gameOver == 0) {
+	while(gameOver == FALSE) {
 		moveBall2(&theBall, &paddle1, &paddle2);
 
 		paddle1X = (paddle1X + 1) % WIDTH;	// Testing
@@ -223,4 +215,8 @@ __interrupt void ADC12_ISR(void)
     ADC12IFG = 0;                                       // Clear the interrupt flags
     ADC12CTL0 &= ~( ADC12ENC | ADC12SC | ADC12REFON);   // (disable conversion | No sample-and-conversion-start | Reference off)
     __bic_SR_register_on_exit(LPM0_bits);
+}
+
+void endGame() {
+	gameOver = TRUE;
 }
