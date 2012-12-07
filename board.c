@@ -26,7 +26,7 @@ int xyz = 0;
 
 
 int gameOver = 0;
-int paddleLength = 0;
+int paddleLength = STARTLENGTH;
 
 //float newX1 = 0.0;
 //int newX2 = 0;
@@ -37,8 +37,8 @@ void makeBall(Ball* ball, int radius, int x, int y) {
 	ball->radius	=	2;
 	ball->x		=	x;
 	ball->y		=	y;
-	ball->dx	=	(rand() % 2);
-	ball->dy	=	1;
+	ball->dx	=	(rand() % 2) ? -1 : 1;
+	ball->dy	=	(rand() % 2) ? -1 : 1;
 }
 
 void makePaddle(Paddle* paddle, int length, int x, int y) {
@@ -72,7 +72,7 @@ void play(int mode) {
 	gameOver = FALSE;
 	halLcdClearScreen();
 	prepare();
-	paddleLength = STARTLENGTH/getLevel();
+	//paddleLength = STARTLENGTH/getLevel();
 	switch(mode) {
 		case SINGLE:
 			startSingleGame();
