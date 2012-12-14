@@ -73,6 +73,7 @@ void play(int mode) {
 	paddleLength = STARTLENGTH/getLevel();
 	switch(mode) {
 		case SINGLE:
+			//P1OUT = 0;
 			startSingleGame();
 			break;
 		case DOUBLE:
@@ -102,8 +103,9 @@ void startSingleGame() {
 		pot1 /= 30;
 
 		moveBall(&theBall, &paddle1);
-		movePaddle(&paddle1, pot1);	// Testing
+		movePaddle(&paddle1, pot1);
 		__delay_cycles(100000);
+
 	}
 
 }
@@ -141,12 +143,13 @@ void startDoubleGame() {
 
 void startComputerGame() {
 	int compCounter = 0;
+
 	// Make and draw player 1's paddle
 	makePaddle(&paddle1, paddleLength, WIDTH/2, HEIGHT - 14);
 	drawPaddle(&paddle1);
 
 	// Make and draw the computer's paddle
-	makePaddle(&paddle2, paddleLength, WIDTH/2, 14);
+	makePaddle(&paddle2, STARTLENGTH, WIDTH/2, 14);
 	drawPaddle(&paddle2);
 
 	// Make and draw the ball
@@ -159,7 +162,7 @@ void startComputerGame() {
 		moveBall2(&theBall, &paddle1, &paddle2);
 		pot1 /= 30;
 		movePaddle(&paddle1, pot1);
-		int temp = fabs(getLevel() - 4)/1;
+		int temp = fabs(3 - 4)/1;
 		int turn = compCounter%temp;
 		if(turn == 0) {
 			// Move the AI
